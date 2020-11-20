@@ -6,7 +6,7 @@ module.exports = {
     "node_modules/@leansdk/leanes-fs-utils-addon",
     "node_modules/@leansdk/leanes-configurable-addon",
   ],
-
+  // exclude: [/node_modules\/(?![@leansdk\/leanes])/],
   presets: [
     ['@babel/preset-env'],
   ],

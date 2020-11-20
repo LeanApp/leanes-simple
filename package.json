@@ -9,7 +9,7 @@
     "serve": "broccoli serve",
     "test": "mocha",
     "test_build": "ENV=build mocha",
-    "script": "babel-node --ignore [] ./src/index.js"
+    "script": "babel-node --ignore ['node_modules/@babel/plugin-syntax-flow/**'] --config-file ./babel.config.js -e ./src/index.js"
   },
   "repository": {
     "type": "git",
