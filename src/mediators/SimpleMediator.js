@@ -1,72 +1,82 @@
-// import { readLine } from 'stdio';
-const readline = require('readline');
+// This file is part of leanes-simple.
+//
+// leanes-simple is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// leanes-simple is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
+
+import readline from 'readline';
 
 export default (Module) => {
   const {
+    START_CONSOLE, MSG_FROM_CONSOLE, MSG_TO_CONSOLE,
     Mediator,
-    initialize, module, meta, property, method, nameBy
+    initialize, partOf, meta, property, method, nameBy
   } = Module.NS;
 
-
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: '>>>>>>>>>>>>>>>>>>'
-  });
-
   @initialize
-  @module(Module)
+  @partOf(Module)
   class SimpleMediator extends Mediator {
     @nameBy static __filename = __filename;
     @meta static object = {};
 
     @method listNotificationInterests(): string[] {
-      const interests = super.listNotificationInterests(...arguments);
-      interests.push('STDIN_START');
-      interests.push('STDIN_COMPLETE');
+      const interests = super.listNotificationInterests(... arguments);
+      interests.push(START_CONSOLE);
+      interests.push(MSG_TO_CONSOLE);
       return interests;
     }
 
-    @method handleNotification(aoNotification: NotificationInterface): void {
-      switch (aoNotification.getName()) {
-        case 'STDIN_START':
+    @method handleNotification<T = ?any>(note: NotificationInterface<T>): ?Promise<void> {
+      switch (note.getName()) {
+        case (START_CONSOLE):
           this.stdinStart();
           break;
-        case 'STDIN_COMPLETE':
-          this.stdinComplete(aoNotification.getBody());
+        case (MSG_TO_CONSOLE):
+          this.stdinComplete(note.getBody());
           break;
         default:
-          super.handleNotification(aoNotification);
+          super.handleNotification(note);
       }
     }
 
     @method onRegister() {
-      // rl.prompt();
-      // rl.on('line', (input) => {
-      //   console.log(`Received: ${input}`);
-      //   this.send('STDIN', input);
-      // });
+      super.onRegister();
+      this.rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+        prompt: '>>>>>>>>>>>>>>>>>>'
+      });
     }
 
-    @method onRemove() {
-
+    @method async onRemove(): Promise<void> {
+      await super.onRemove();
+      this.rl.close()
     }
 
-    @method stdinStart(body) {
+    @method stdinStart() {
       console.log('Start: ');
-      rl.prompt();
-      rl.on('line', (input) => {
+      this.rl.prompt();
+      this.rl.on('line', (input) => {
         console.log(`Received: ${input}`);
-        this.send('STDIN', input);
+        this.send(MSG_FROM_CONSOLE, input);
       });
     }
 
     @method stdinComplete(body) {
       console.log('Complete: ', body);
-      rl.prompt();
-      rl.on('line', (input) => {
+      this.rl.prompt();
+      this.rl.on('line', (input) => {
         console.log(`Received: ${input}`);
-        this.send('STDIN', input);
+        this.send(MSG_FROM_CONSOLE, input);
       });
     }
   }

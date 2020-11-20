@@ -13,35 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
 
-import type { NotificationInterface } from '../interfaces/NotificationInterface';
+import type { SimpleAdapterInterface } from '../interfaces/SimpleAdapterInterface';
 
 export default (Module) => {
   const {
-    STARTUP, STARTUP_COMPLETE,
-    Command,
-    PrepareControllerCommand,
-    PrepareModelCommand,
-    PrepareViewCommand,
-    initialize, partOf, meta, method, nameBy
+    Adapter,
+    initialize, partOf, meta, nameBy, property, method,
   } = Module.NS;
 
   @initialize
   @partOf(Module)
-  class StartupCommand extends Command {
+  class SimpleAdapter extends Adapter implements SimpleAdapterInterface {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    @method initializeCommand(): void {
-      this.addSubCommand(PrepareControllerCommand);
-      this.addSubCommand(PrepareModelCommand);
-      this.addSubCommand(PrepareViewCommand);
+    @property _data: ?any = null;
+
+    @method 'set'(data: ?any): void {
+      this._data = data;
     }
 
-    @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('StartupCommand execute()');
-      super.execute(note);
-      this.facade.removeCommand(STARTUP);
-      this.send(STARTUP_COMPLETE);
+    @method 'get'(): ?any {
+      return this._data;
     }
   }
 }

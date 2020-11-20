@@ -13,26 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
 
-export default (Module) => {
-  const {
-    Proxy,
-    initialize, partOf, meta, method, nameBy,
-  } = Module.NS;
+export interface SimpleProxyInterface {
+  getProxyName(): string;
 
-  @initialize
-  @partOf(Module)
-  class ApplicationProxy extends Proxy {
-    @nameBy static  __filename = __filename;
-    @meta static object = {};
+  setData(ahData: ?any): void;
 
-    @method onRegister() {
-      console.log('ApplicationProxy registered');
-      super.onRegister();
-    }
+  getData(): ?any;
 
-    @method async onRemove(): Promise<void> {
-      await super.onRemove();
+  onRegister(): void;
 
-    }
-  }
+  onRemove(): Promise<void>;
 }

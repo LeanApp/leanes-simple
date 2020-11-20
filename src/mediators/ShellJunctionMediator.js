@@ -1,15 +1,22 @@
-import type {
-  NotificationInterface,
-  PipeMessageInterface
-} from '../libs/leanes';
+// This file is part of leanes-simple.
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//
+// Software distributed under the License is distributed on an "AS IS" basis,
+// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+// the specific language governing rights and limitations under the License.
 
+import type { NotificationInterface } from '../interfaces/NotificationInterface';
+import type { PipeMessageInterface } from '../interfaces/PipeMessageInterface';
 
 export default (Module) => {
   const {
     Pipes,
     Application,
     LoggingJunctionMixin,
-    initialize, module, meta, property, method, nameBy, mixin
+    initialize, partOf, meta, property, method, nameBy, mixin
   } = Module.NS;
 
   const {
@@ -23,7 +30,7 @@ export default (Module) => {
   const { SEND_TO_LOG, LEVELS, DEBUG } = LogMessage;
 
   @initialize
-  @module(Module)
+  @partOf(Module)
   @mixin(LoggingJunctionMixin)
   class ShellJunctionMediator extends JunctionMediator {
     @nameBy static  __filename = __filename;
@@ -35,14 +42,14 @@ export default (Module) => {
       return interests;
     }
 
-    @method handleNotification(aoNotification: NotificationInterface) {
-      switch (aoNotification.getName()) {
-        case CONNECT_MODULE_TO_SHELL:
+    @method async handleNotification<T = ?any>(note: NotificationInterface<T>): Promise<void> {
+      switch (note.getName()) {
+        case (CONNECT_MODULE_TO_SHELL):
           this.send(
             SEND_TO_LOG, 'Connecting new module instance to Shell.', LEVELS[DEBUG]
           );
           // Connect a module's STDSHELL to the shell's STDIN
-          const module = aoNotification.getBody();
+          const module = note.getBody();
           const moduleToShell = Pipe.new();
           module.acceptOutputPipe(STDSHELL, moduleToShell);
           const shellIn = this._junction.retrievePipe(STDIN);
@@ -54,15 +61,16 @@ export default (Module) => {
           shellOut.connect(shellToModule);
           break;
         default:
-          super.handleNotification(aoNotification);
+          await super.handleNotification(note);
       }
     }
 
-    @method handlePipeMessage(aoMessage: PipeMessageInterface): void {
+    @method async handlePipeMessage(msg: PipeMessageInterface): Promise<void> {
       return;
     }
 
     @method onRegister() {
+      super.onRegister();
       // The STDOUT pipe from the shell to all modules
       this._junction.registerPipe(STDOUT, OUTPUT, TeeSplit.new());
       // The STDIN pipe to the shell from all modules
@@ -70,15 +78,12 @@ export default (Module) => {
       this._junction.addPipeListener(STDIN, this, this.handlePipeMessage);
       // The STDLOG pipe from the shell to the logger
       this._junction.registerPipe(STDLOG, OUTPUT, Pipe.new());
-      return this.send(CONNECT_SHELL_TO_LOGGER, this._junction);
+      this.send(CONNECT_SHELL_TO_LOGGER, this._junction);
     }
 
-    // @method init() {
-    //   super.init(ShellJunctionMediator.NAME, Junction.new());
-    // }
-
     constructor() {
-      super(`${Module.name}JunctionMediator`, Junction.new());
+      super(... arguments);
+      this.setViewComponent(Junction.new());
     }
   }
 }

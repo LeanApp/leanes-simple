@@ -1,18 +1,25 @@
+// This file is part of leanes-simple.
+//
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+//
+// Software distributed under the License is distributed on an "AS IS" basis,
+// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+// the specific language governing rights and limitations under the License.
+
 import Logger from '../services/logger';
 const { LoggerApplication } = Logger.NS;
 
-
-import type {
-  NotificationInterface,
-  PipeAwareInterface
-} from '../libs/leanes';
+import type { NotificationInterface } from '../interfaces/NotificationInterface';
+import type { PipeAwareInterface } from '../interfaces/PipeAwareInterface';
 
 export default (Module) => {
   const {
     LIGHTWEIGHT,
     Pipes,
     Mediator, Application,
-    initialize, module, meta, property, method, nameBy
+    initialize, partOf, meta, property, method, nameBy
   } = Module.NS;
 
   const {
@@ -25,7 +32,7 @@ export default (Module) => {
   const { CONNECT_MODULE_TO_LOGGER, CONNECT_SHELL_TO_LOGGER } = Application;
 
   @initialize
-  @module(Module)
+  @partOf(Module)
   class LoggerModuleMediator extends Mediator {
     @nameBy static  __filename = __filename;
     @meta static object = {};
@@ -34,27 +41,28 @@ export default (Module) => {
       return this.getViewComponent();
     }
 
-    @method onRemove() {
-      return this.logger.finish();
+    @method async onRemove(): Promise<void> {
+      await super.onRemove();
+      await this.logger.finish();
     }
 
     @method listNotificationInterests(): string[] {
       return [ CONNECT_MODULE_TO_LOGGER, CONNECT_SHELL_TO_LOGGER ];
     }
 
-    @method handleNotification(aoNotification: NotificationInterface): void {
-      switch (aoNotification.getName()) {
+    @method handleNotification<T = ?any>(note: NotificationInterface<T>): ?Promise<void> {
+      switch (note.getName()) {
         // Connect any Module's STDLOG to the logger's STDIN
-        case CONNECT_MODULE_TO_LOGGER:
-          const module = aoNotification.getBody();
+        case (CONNECT_MODULE_TO_LOGGER):
+          const module = note.getBody();
           const pipe = Pipe.new();
           module.acceptOutputPipe(STDLOG, pipe);
           this.logger.acceptInputPipe(STDIN, pipe);
           break;
         // Bidirectionally connect shell and logger on STDLOG/STDSHELL
-        case CONNECT_SHELL_TO_LOGGER:
+        case (CONNECT_SHELL_TO_LOGGER):
           // The junction was passed from ShellJunctionMediator
-          const junction = aoNotification.getBody();
+          const junction = note.getBody();
           // Connect the shell's STDLOG to the logger's STDIN
           const shellToLog = junction.retrievePipe(STDLOG);
           this.logger.acceptInputPipe(STDIN, shellToLog);
@@ -68,9 +76,8 @@ export default (Module) => {
     }
 
     constructor() {
-      super(
-        LoggerModuleMediator.name, LoggerApplication.new(LIGHTWEIGHT)
-      );
+      super(... arguments);
+      this.setViewComponent(LoggerApplication.new(LIGHTWEIGHT));
       this.logger.start();
     }
   }

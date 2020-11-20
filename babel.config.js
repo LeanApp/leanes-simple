@@ -1,11 +1,12 @@
 
+
 module.exports = {
-  // root: __dirname,
-  // rootMode: 'upward',
-  // test: [__dirname],
-  // include: ["./node_modules/leanes/src"],
-  // babelrcRoots: [ "." ],
-  babelrcRoots: [ "node_modules/@leansdk/leanes",  "node_modules/@leansdk/leanes-fs-utils-addon" ],
+  babelrcRoots: [
+    "node_modules/@leansdk/leanes",
+    "node_modules/@leansdk/leanes-fs-utils-addon",
+    "node_modules/@leansdk/leanes-configurable-addon",
+  ],
+
   presets: [
     ['@babel/preset-env'],
   ],
@@ -17,7 +18,8 @@ module.exports = {
     }],
     "@babel/plugin-transform-flow-strip-types",
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    "babel-plugin-parameter-decorator",
     ["@babel/plugin-proposal-class-properties", { "loose": true }],
     "@babel/plugin-transform-runtime"
-  ]
+  ],
 }
