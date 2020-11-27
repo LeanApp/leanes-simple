@@ -19,7 +19,7 @@ import type { ApplicationInterface } from '../interfaces/ApplicationInterface';
 export default (Module) => {
   const {
     APPLICATION_MEDIATOR, SHELL, LOGGER_MODULE,
-    Command,
+    Command, ApplicationMediator,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
 
@@ -32,10 +32,21 @@ export default (Module) => {
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
       console.log('PrepareViewCommand execute()');
       const app: ApplicationInterface = note.getBody();
-      this.facade.addMediator(SHELL, 'ShellJunctionMediator');
+
+      const appMediator = ApplicationMediator.new();
+      appMediator.setName(APPLICATION_MEDIATOR);
+      appMediator.setViewComponent(app);
+      this.facade.registerMediator(appMediator);
+
       this.facade.addMediator(LOGGER_MODULE, 'LoggerModuleMediator');
-      this.facade.addMediator(APPLICATION_MEDIATOR, 'ApplicationMediator', app);
+      this.facade.addMediator(SHELL, 'ShellJunctionMediator');
       this.facade.addMediator('SimpleMediator');
+      // this.facade.addMediator(APPLICATION_MEDIATOR, 'ApplicationMediator', app);
+      // this.facade.activateMediator(APPLICATION_MEDIATOR);
+
+      this.facade.activateMediator(LOGGER_MODULE);
+      this.facade.activateMediator(SHELL);
+      this.facade.activateMediator('SimpleMediator');
     }
   }
 }

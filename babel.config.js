@@ -6,9 +6,10 @@ module.exports = {
     "node_modules/@leansdk/leanes-fs-utils-addon",
     "node_modules/@leansdk/leanes-configurable-addon",
   ],
-  // exclude: [/node_modules\/(?![@leansdk\/leanes])/],
+  exclude: [/node_modules\/(?![@leansdk\/leanes])/],
   presets: [
-    ['@babel/preset-env'],
+    // "@babel/preset-env"
+    ["@babel/preset-env", {targets: {node: '14.9'}, loose: true, useBuiltIns: false}]
   ],
   plugins: [
     "@babel/plugin-syntax-flow",

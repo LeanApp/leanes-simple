@@ -38,6 +38,7 @@ export default (Module) => {
     @method handleNotification<T = ?any>(note: NotificationInterface<T>): ?Promise<void> {
       switch (note.getName()) {
         case (START_CONSOLE):
+          console.log('GGGGGGGGGG');
           this.stdinStart();
           break;
         case (MSG_TO_CONSOLE):
@@ -50,11 +51,16 @@ export default (Module) => {
 
     @method onRegister() {
       super.onRegister();
+      process.stdin.on('data', (d) => {
+        console.log('<<><>', d.toString());
+      })
       this.rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
-        prompt: '>>>>>>>>>>>>>>>>>>'
+        prompt: '... waiting new text ...\n'
       });
+      this.rl.setMaxListeners(Number.MAX_SAFE_INTEGER);
+      console.log('SSS00U SimpleMediator', this.listNotificationInterests());
     }
 
     @method async onRemove(): Promise<void> {
@@ -74,10 +80,10 @@ export default (Module) => {
     @method stdinComplete(body) {
       console.log('Complete: ', body);
       this.rl.prompt();
-      this.rl.on('line', (input) => {
-        console.log(`Received: ${input}`);
-        this.send(MSG_FROM_CONSOLE, input);
-      });
+      // this.rl.once('line', (input) => {
+      //   console.log(`Received: ${input}`);
+      //   this.send(MSG_FROM_CONSOLE, input);
+      // });
     }
   }
 }

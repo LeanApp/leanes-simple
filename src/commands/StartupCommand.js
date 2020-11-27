@@ -31,7 +31,7 @@ export default (Module) => {
     @nameBy static  __filename = __filename;
     @meta static object = {};
 
-    @method initializeCommand(): void {
+    @method initializeSubCommands(): void {
       this.addSubCommand(PrepareControllerCommand);
       this.addSubCommand(PrepareModelCommand);
       this.addSubCommand(PrepareViewCommand);
@@ -40,6 +40,7 @@ export default (Module) => {
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
       console.log('StartupCommand execute()');
       super.execute(note);
+      console.log('StartupCommand execute()--');
       this.facade.removeCommand(STARTUP);
       this.send(STARTUP_COMPLETE);
     }

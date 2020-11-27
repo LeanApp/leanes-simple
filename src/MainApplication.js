@@ -60,7 +60,6 @@ export default (Module) => {
       super(Module.name, ApplicationFacade, symbol);
       console.log('>>>>QQQQ 1010+1');
       this.dispatch = this.sendEvent.bind(this);
-      this.setLogLevelMethod(DEBUG);
       console.log('>>>>QQQQ 1010+2');
       if (!_.isSymbol(data) && _.isObject(data)) {
         console.log('>>>>QQQQ 1010+3');

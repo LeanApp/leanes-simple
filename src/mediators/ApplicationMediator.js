@@ -36,7 +36,7 @@ export default (Module) => {
       super.onRegister();
       this._job = new CronJob('*/7 * * * * *', async () => {
         const result = await this.run(CLEAR_CONSOLE);
-        console.log(`Result from script: "${result}"`);
+        // console.log(`Result from script: "${result}"`);
       }, null, true, 'America/Los_Angeles');
       this._job.start();
     }

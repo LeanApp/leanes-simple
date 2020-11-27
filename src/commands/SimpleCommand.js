@@ -20,7 +20,7 @@ export default (Module) => {
   const {
     SIMPLE_PROXY, MSG_TO_CONSOLE,
     Command,
-    initialize, partOf, meta, method, nameBy, inject,
+    initialize, partOf, meta, method, property, nameBy, inject,
   } = Module.NS;
 
   @initialize

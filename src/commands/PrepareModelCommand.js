@@ -33,6 +33,7 @@ export default (Module) => {
       console.log('PrepareModelCommand execute()');
       const app: ApplicationInterface = note.getBody();
       this.facade.addProxy(APPLICATION_PROXY, 'ApplicationProxy', app.initialState);
+      this.facade.addAdapter('SimpleAdapter');
       this.facade.addProxy(SIMPLE_PROXY, 'SimpleProxy');
     }
   }

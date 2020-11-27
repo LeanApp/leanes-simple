@@ -13,11 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
 
+import type { SimpleProxyInterface } from '../interfaces/SimpleProxyInterface';
+
 export default (Module) => {
   const {
-    SIMPLE_PROXY,
+    SIMPLE_PROXY, MSG_FROM_CONSOLE, MSG_TO_CONSOLE,
     Script,
-    initialize, partOf, meta, method, nameBy
+    initialize, partOf, meta, method, property, nameBy, inject
   } = Module.NS;
 
   @initialize
@@ -34,8 +36,7 @@ export default (Module) => {
 
     @method async body(data: ?any): Promise<?any> {
       console.log('SimpleScript execute()');
-      await this.send(MSG_FROM_CONSOLE, '');
-      this._simpleProxy.setData('... waiting new text ...');
+      this._simpleProxy.setData('');
       await this.send(MSG_TO_CONSOLE, this._simpleProxy.getData());
       return 'clearing compleated';
     }

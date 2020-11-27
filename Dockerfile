@@ -16,4 +16,4 @@ RUN chmod -R u+x start.sh
 WORKDIR /usr/src/app
 COPY . .
 
-CMD bash start.sh
+ENTRYPOINT bash start.sh

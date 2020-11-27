@@ -8,8 +8,8 @@
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 
-import LeanES from '@leansdk/leanes/src';
-import FsUtilsAddon from '@leansdk/leanes-fs-utils-addon/src';
+import LeanES from '__LeanES__';
+import FsUtilsAddon from '__FsUtilsAddon__';
 
 const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles, } = LeanES.NS;
 
