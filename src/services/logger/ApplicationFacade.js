@@ -43,6 +43,7 @@ export default (Module) => {
 
     @method initializeFacade(): void {
       super.initializeFacade(... arguments)
+      this.rebind('ApplicationModule').toConstructor(this.Module);
       this.addCommand(STARTUP, 'StartupCommand');
     }
   }
