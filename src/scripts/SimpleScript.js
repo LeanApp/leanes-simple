@@ -17,7 +17,7 @@ import type { SimpleProxyInterface } from '../interfaces/SimpleProxyInterface';
 
 export default (Module) => {
   const {
-    SIMPLE_PROXY, MSG_FROM_CONSOLE, MSG_TO_CONSOLE,
+    SIMPLE_PROXY, MSG_TO_CONSOLE,
     Script,
     initialize, partOf, meta, method, property, nameBy, inject
   } = Module.NS;
