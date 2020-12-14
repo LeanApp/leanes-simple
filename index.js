@@ -8,16 +8,16 @@
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 
-const path = process.env.ENV === 'development' ? "./dev" : "./app"
+const path = process.env.ENV === 'development' ? "./dev" : "./prod"
 const Module = require(path).default
 
-const initialState = {};
-const app = Module.NS.MainApplication.new(initialState);
-app.start();
-const { ERROR, DEBUG, LEVELS, SEND_TO_LOG } = Module.NS.Pipes.NS.LogMessage;
-app.setLogLevelMethod(DEBUG);
+const initialState = {}
+const app = Module.NS.MainApplication.new(initialState)
+app.start()
+const { ERROR, DEBUG, LEVELS, SEND_TO_LOG } = Module.NS.Pipes.NS.LogMessage
+app.setLogLevelMethod(DEBUG)
 
 app.send(
   SEND_TO_LOG, 'Hello world', LEVELS[DEBUG]
-);
-app.send(Module.NS.START_CONSOLE);
+)
+app.send(Module.NS.START_CONSOLE)

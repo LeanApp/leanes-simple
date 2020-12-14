@@ -4,7 +4,7 @@ LABEL maintainer="Denis Trayzhon <d.g.trayzhon@gmail.com>"
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 
 WORKDIR /

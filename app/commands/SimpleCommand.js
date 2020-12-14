@@ -1,22 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _initializerDefineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerDefineProperty"));
-
-var _initializerWarningHelper2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerWarningHelper"));
-
-var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
-
-var _NotificationInterface2 = require("../interfaces/NotificationInterface");
-
-var _SimpleProxyInterface2 = require("../interfaces/SimpleProxyInterface");
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-simple.
 //
 // leanes-simple is free software: you can redistribute it and/or modify
@@ -31,61 +12,32 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
-const SimpleProxyInterface = _flowRuntime.default.tdz(() => _SimpleProxyInterface2.SimpleProxyInterface);
 
-const NotificationInterface = _flowRuntime.default.tdz(() => _NotificationInterface2.NotificationInterface);
+import type { NotificationInterface } from '../interfaces/NotificationInterface';
+import type { SimpleProxyInterface } from '../interfaces/SimpleProxyInterface';
 
-var _default = Module => {
-  var _dec, _dec2, _class, _class2, _init, _init2, _descriptor, _class3, _temp;
-
+export default (Module) => {
   const {
-    SIMPLE_PROXY,
-    MSG_TO_CONSOLE,
+    SIMPLE_PROXY, MSG_TO_CONSOLE,
     Command,
-    initialize,
-    partOf,
-    meta,
-    method,
-    property,
-    nameBy,
-    inject
+    initialize, partOf, meta, method, property, nameBy, inject,
   } = Module.NS;
-  let SimpleCommand = (_dec = partOf(Module), _dec2 = inject(`Factory<${SIMPLE_PROXY}>`), initialize(_class = _dec(_class = (_class2 = (_temp = _class3 = class SimpleCommand extends Command {
-    constructor(...args) {
-      super(...args);
-      (0, _initializerDefineProperty2.default)(this, "_simpleProxyFactory", _descriptor, this);
+
+  @initialize
+  @partOf(Module)
+  class SimpleCommand extends Command {
+    @nameBy static  __filename = __filename;
+    @meta static object = {};
+
+    @inject(`Factory<${SIMPLE_PROXY}>`)
+    @property _simpleProxyFactory: () => SimpleProxyInterface;
+    @property get _simpleProxy(): SimpleProxyInterface {
+      return this._simpleProxyFactory()
     }
 
-    get _simpleProxy() {
-      return this._simpleProxyFactory();
-    }
-
-    execute(note) {
-      this._simpleProxy.setData(note.getBody());
-
+    @method execute<T = ?any>(note: NotificationInterface<T>): void {
+      this._simpleProxy.setData(note.getBody())
       this.send(MSG_TO_CONSOLE, this._simpleProxy.getData());
     }
-
-  }, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {
-    enumerable: true,
-    configurable: true,
-    writable: true,
-    initializer: function () {
-      return _init;
-    }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2, "object", [meta], (_init2 = Object.getOwnPropertyDescriptor(_class2, "object"), _init2 = _init2 ? _init2.value : undefined, {
-    enumerable: true,
-    configurable: true,
-    writable: true,
-    initializer: function () {
-      return _init2;
-    }
-  }), _class2), _descriptor = (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_simpleProxyFactory", [_dec2, property], {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    initializer: null
-  }), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "_simpleProxy", [property], Object.getOwnPropertyDescriptor(_class2.prototype, "_simpleProxy"), _class2.prototype), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "execute", [method], Object.getOwnPropertyDescriptor(_class2.prototype, "execute"), _class2.prototype)), _class2)) || _class) || _class);
-};
-
-exports.default = _default;
+  }
+}

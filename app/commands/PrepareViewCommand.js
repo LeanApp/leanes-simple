@@ -1,18 +1,3 @@
-"use strict";
-
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-exports.__esModule = true;
-exports.default = void 0;
-
-var _applyDecoratedDescriptor2 = _interopRequireDefault(require("@babel/runtime/helpers/applyDecoratedDescriptor"));
-
-var _NotificationInterface2 = require("../interfaces/NotificationInterface");
-
-var _ApplicationInterface2 = require("../interfaces/ApplicationInterface");
-
-var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
-
 // This file is part of leanes-simple.
 //
 // leanes-simple is free software: you can redistribute it and/or modify
@@ -27,32 +12,31 @@ var _flowRuntime = _interopRequireDefault(require("flow-runtime"));
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
-const ApplicationInterface = _flowRuntime.default.tdz(() => _ApplicationInterface2.ApplicationInterface);
 
-const NotificationInterface = _flowRuntime.default.tdz(() => _NotificationInterface2.NotificationInterface);
+import type { NotificationInterface } from '../interfaces/NotificationInterface';
+import type { ApplicationInterface } from '../interfaces/ApplicationInterface';
 
-var _default = Module => {
-  var _dec, _class, _class2, _init, _init2, _class3, _temp;
-
+export default (Module) => {
   const {
-    APPLICATION_MEDIATOR,
-    SHELL,
-    LOGGER_MODULE,
-    SIGNALS_GENERATOR,
+    APPLICATION_MEDIATOR, SHELL, LOGGER_MODULE, SIGNALS_GENERATOR,
     Command,
-    initialize,
-    partOf,
-    meta,
-    method,
-    nameBy
+    initialize, partOf, meta, method, nameBy
   } = Module.NS;
-  let PrepareViewCommand = (_dec = partOf(Module), initialize(_class = _dec(_class = (_class2 = (_temp = _class3 = class PrepareViewCommand extends Command {
-    execute(note) {
+
+  @initialize
+  @partOf(Module)
+  class PrepareViewCommand extends Command {
+    @nameBy static  __filename = __filename;
+    @meta static object = {};
+
+    @method execute<T = ?any>(note: NotificationInterface<T>): void {
       console.log('PrepareViewCommand execute()');
-      const app = note.getBody();
+      const app: ApplicationInterface = note.getBody();
+
       this.facade.addMediator(LOGGER_MODULE, 'LoggerModuleMediator');
       this.facade.addMediator(SHELL, 'ShellJunctionMediator');
       this.facade.addMediator(APPLICATION_MEDIATOR, 'ApplicationMediator', app);
+
       this.facade.activateMediator(APPLICATION_MEDIATOR);
       this.facade.activateMediator(LOGGER_MODULE);
       this.facade.activateMediator(SHELL);
@@ -64,22 +48,5 @@ var _default = Module => {
         this.facade.activateMediator('SimpleMediator');
       }
     }
-
-  }, _class3.__filename = __filename, _class3.object = {}, _temp), ((0, _applyDecoratedDescriptor2.default)(_class2, "__filename", [nameBy], (_init = Object.getOwnPropertyDescriptor(_class2, "__filename"), _init = _init ? _init.value : undefined, {
-    enumerable: true,
-    configurable: true,
-    writable: true,
-    initializer: function () {
-      return _init;
-    }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2, "object", [meta], (_init2 = Object.getOwnPropertyDescriptor(_class2, "object"), _init2 = _init2 ? _init2.value : undefined, {
-    enumerable: true,
-    configurable: true,
-    writable: true,
-    initializer: function () {
-      return _init2;
-    }
-  }), _class2), (0, _applyDecoratedDescriptor2.default)(_class2.prototype, "execute", [method], Object.getOwnPropertyDescriptor(_class2.prototype, "execute"), _class2.prototype)), _class2)) || _class) || _class);
-};
-
-exports.default = _default;
+  }
+}
