@@ -14,7 +14,7 @@ import type { ApplicationInterface } from '../../../interfaces/ApplicationInterf
 export default (Module) => {
   const {
     APPLICATION_MEDIATOR, LOGGER,
-    Command, //ApplicationMediator,
+    Command,
     initialize, partOf, meta, method, nameBy
   } = Module.NS;
 
@@ -26,10 +26,7 @@ export default (Module) => {
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
       const app: ApplicationInterface = note.getBody();
-      // const appMediator = ApplicationMediator.new();
-      // appMediator.setName(APPLICATION_MEDIATOR);
-      // appMediator.setViewComponent(app);
-      // this.facade.registerMediator(appMediator);
+
       this.facade.addMediator(APPLICATION_MEDIATOR, 'ApplicationMediator', app);
       this.facade.addMediator(LOGGER, 'LoggerJunctionMediator');
 

@@ -35,7 +35,6 @@ export default (Module) => {
     }
 
     @method async body(data: ?any): Promise<?any> {
-      console.log('SimpleScript execute()');
       this._simpleProxy.setData('');
       await this.send(MSG_TO_CONSOLE, this._simpleProxy.getData());
       return 'clearing compleated';

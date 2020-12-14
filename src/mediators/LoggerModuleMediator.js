@@ -41,11 +41,6 @@ export default (Module) => {
       return this.getViewComponent();
     }
 
-    @method onRegister() {
-      super.onRegister();
-      console.log('GGFG00 LoggerModuleMediator', this.listNotificationInterests());
-    }
-
     @method async onRemove(): Promise<void> {
       await super.onRemove();
       await this.logger.finish();
@@ -56,7 +51,6 @@ export default (Module) => {
     }
 
     @method handleNotification<T = ?any>(note: NotificationInterface<T>): ?Promise<void> {
-      console.log('?>?>?>>LoggerModuleMediator::handleNotification', note.getName());
       switch (note.getName()) {
         // Connect any Module's STDLOG to the logger's STDIN
         case (CONNECT_MODULE_TO_LOGGER):
@@ -77,7 +71,6 @@ export default (Module) => {
           const shellIn = junction.retrievePipe(STDIN);
           shellIn.connectInput(logToShell);
           this.logger.acceptOutputPipe(STDSHELL, logToShell);
-          console.log('?>?>?>>CONNECT_SHELL_TO_LOGGER');
           break;
       }
     }

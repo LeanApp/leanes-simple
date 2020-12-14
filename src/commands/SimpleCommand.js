@@ -36,7 +36,6 @@ export default (Module) => {
     }
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('SimpleCommand execute()');
       this._simpleProxy.setData(note.getBody())
       this.send(MSG_TO_CONSOLE, this._simpleProxy.getData());
     }

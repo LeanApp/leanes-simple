@@ -9,7 +9,7 @@ elif [ $BOTTOM = "machine" ]; then
   export APP_PATH=${PWD/home/hosthome}
 fi
 
-docker-compose -f docker-compose.yml build app
+# docker-compose -f docker-compose.yml build app
 docker-compose \
   -f docker-compose.yml \
   down

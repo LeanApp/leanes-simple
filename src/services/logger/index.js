@@ -23,13 +23,4 @@ class Logger extends LeanES {
   @constant ROOT = __dirname;
 };
 
-// require('./model/LoggerProxy').default(Logger);
-// require('./view/LoggerJunctionMediator').default(Logger);
-// require('./controller/PrepareControllerCommand').default(Logger);
-// require('./controller/PrepareModelCommand').default(Logger);
-// require('./controller/PrepareViewCommand').default(Logger);
-// require('./controller/StartupCommand').default(Logger);
-// require('./ApplicationFacade').default(Logger);
-// require('./LoggerApplication').default(Logger);
-
 export default Logger;

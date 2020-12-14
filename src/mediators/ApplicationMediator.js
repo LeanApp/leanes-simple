@@ -1,26 +1,18 @@
 // This file is part of leanes-simple.
 //
-// leanes-simple is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
-// leanes-simple is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Affero General Public License for more details.
-//
-// You should have received a copy of the GNU Affero General Public License
-// along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
-
-import { CronJob } from 'cron';
+// Software distributed under the License is distributed on an "AS IS" basis,
+// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+// the specific language governing rights and limitations under the License.
 
 export default (Module) => {
   const {
-    CLEAR_CONSOLE,
     Mediator,
     ApplicationMediatorMixin,
-    initialize, partOf, meta, nameBy, method, property, mixin
+    initialize, partOf, meta, nameBy, mixin
   } = Module.NS;
 
   @initialize
@@ -29,21 +21,5 @@ export default (Module) => {
   class ApplicationMediator extends Mediator {
     @nameBy static  __filename = __filename;
     @meta static object = {};
-
-    @property _job = null;
-
-    @method onRegister(): void  {
-      super.onRegister();
-      this._job = new CronJob('*/7 * * * * *', async () => {
-        const result = await this.run(CLEAR_CONSOLE);
-        // console.log(`Result from script: "${result}"`);
-      }, null, true, 'America/Los_Angeles');
-      this._job.start();
-    }
-
-    @method async onRemove(): Promise<void> {
-      await super.onRemove();
-      this._job.stop();
-    }
   }
 }

@@ -29,7 +29,6 @@ export default (Module) => {
     @meta static object = {};
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('PrepareControllerCommand execute()');
       this.facade.addCommand(MSG_FROM_CONSOLE, 'SimpleCommand');
       this.facade.addCommand(CLEAR_CONSOLE, 'SimpleScript');
     }

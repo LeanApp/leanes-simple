@@ -1,22 +1,17 @@
 // This file is part of leanes-simple.
 //
-// leanes-simple is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 //
-// leanes-simple is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Affero General Public License for more details.
-//
-// You should have received a copy of the GNU Affero General Public License
-// along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
+// Software distributed under the License is distributed on an "AS IS" basis,
+// WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+// the specific language governing rights and limitations under the License.
 
 export default (Module) => {
   const {
     Proxy,
-    initialize, partOf, meta, method, nameBy,
+    initialize, partOf, meta, nameBy,
   } = Module.NS;
 
   @initialize
@@ -24,15 +19,5 @@ export default (Module) => {
   class ApplicationProxy extends Proxy {
     @nameBy static  __filename = __filename;
     @meta static object = {};
-
-    @method onRegister() {
-      console.log('ApplicationProxy registered');
-      super.onRegister();
-    }
-
-    @method async onRemove(): Promise<void> {
-      await super.onRemove();
-
-    }
   }
 }

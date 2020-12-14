@@ -23,17 +23,6 @@ export default (Module) => {
 
     @property _isInitialized: boolean = false;
 
-    // @method static getInstance(asKey) {
-    //   if (!asKey) {
-    //     return null;
-    //   }
-    //   if (!Facade._instanceMap[asKey]) {
-    //     return ApplicationFacade.new(asKey);
-    //   }
-    //
-    //   return Facade._instanceMap[asKey];
-    // }
-
     @method startup(app) {
       if (!this._isInitialized) {
         this._isInitialized = true;

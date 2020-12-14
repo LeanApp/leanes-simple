@@ -13,19 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with leanes-simple.  If not, see <https://www.gnu.org/licenses/>.
 
-console.log('>>>>QQQQ 000-+911*');
-// import LeanES from './libs/leanes';
-// import LeanES from '@leansdk/leanes/lib/index.dev';
-// import FsUtilsAddon from '@leansdk/leanes-fs-utils-addon/lib/index.dev';
-// import ConfigurableAddon from '@leansdk/leanes-configurable-addon/lib/index.dev';
 import LeanES from '__LeanES__';
 import FsUtilsAddon from '__FsUtilsAddon__';
 import ConfigurableAddon from '__ConfigurableAddon__';
-// import EventedStateMachine from './plugins/evented_state_machine';
+
 const { initialize, meta, nameBy, resolver, constant, plugin, loadFiles } = LeanES.NS;
-
-
-console.log('>>>>QQQQ 111+');
 
 @initialize
 @loadFiles
@@ -42,30 +34,7 @@ class SimpleApp extends LeanES {
   @constant CLEAR_CONSOLE = 'CLEAR_CONSOLE';
   @constant SIMPLE_PROXY = 'SimpleProxy';
   @constant SIMPLE_ADAPTER = 'SimpleAdapter';
+  @constant SIGNALS_GENERATOR = 'SignalsGenerator';
 };
 
-
-console.log('>>>>QQQQ 222');
-const initialState = {};
-const app = SimpleApp.NS.MainApplication.new(initialState);
-console.log('>>>>QQQQ 333');
-app.start();
-console.log('>>>>QQQQ 444');
-const { ERROR, DEBUG, LEVELS, SEND_TO_LOG } = SimpleApp.NS.Pipes.NS.LogMessage;
-app.setLogLevelMethod(DEBUG);
-console.log('>>>>QQQQ 1010+1++');
-// const isBackground = true;
-// window.isBackground = isBackground;
-// console.log('>>????? isBackground', isBackground, app.facade);
-// app.facade
-//   .getMediator('ApplicationMediator')
-//   .migrate()
-//   .then(d => console.log('>>???-,, O_O', d));
-console.log('>>>>QQQQ 444++', ERROR, DEBUG, LEVELS, SEND_TO_LOG);
-app.send(
-  SEND_TO_LOG, 'Hello world', LEVELS[DEBUG]
-);
-console.log('>>>>QQQQ 555');
-app.send(SimpleApp.NS.START_CONSOLE);
-
-export default app;
+export default SimpleApp;

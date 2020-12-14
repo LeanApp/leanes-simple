@@ -24,10 +24,8 @@ services:
     container_name: app
     stdin_open: true
     environment:
-      # - HOST=0.0.0.0
-      # - PORT=8080
-      - ENV=development
-      - APP_PATH=${APP_PATH}
+      APP_PATH: ${APP_PATH}
+      ENV: development
     volumes:
       - ${APP_PATH}:/usr/src/app
       - ${APP_PATH}/.bash_history:/root/.bash_history

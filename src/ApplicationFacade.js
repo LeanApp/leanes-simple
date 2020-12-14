@@ -8,8 +8,6 @@
 // WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 // the specific language governing rights and limitations under the License.
 
-console.log('>>>>QQQQ 11-11');
-
 export default (Module) => {
   const {
     STARTUP,
@@ -25,18 +23,6 @@ export default (Module) => {
 
     @property _isInitialized: boolean = false;
 
-    // @method static getInstance(asKey) {
-    //   if (!asKey) {
-    //     return null;
-    //   }
-    //   console.log('>>>>QQQQ 13-13+1');
-    //   if (!Facade._instanceMap[asKey]) {
-    //     ApplicationFacade.new(asKey);
-    //   }
-    //   console.log('>>>>QQQQ 13-13+2');
-    //   return Facade._instanceMap[asKey];
-    // }
-
     @method startup(app) {
       if (!this._isInitialized) {
         this._isInitialized = true;
@@ -51,4 +37,3 @@ export default (Module) => {
     }
   }
 }
-console.log('>>>>QQQQ 11-11+');

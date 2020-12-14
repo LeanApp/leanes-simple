@@ -30,7 +30,6 @@ export default (Module) => {
     @meta static object = {};
 
     @method execute<T = ?any>(note: NotificationInterface<T>): void {
-      console.log('PrepareModelCommand execute()');
       const app: ApplicationInterface = note.getBody();
       this.facade.addProxy(APPLICATION_PROXY, 'ApplicationProxy', app.initialState);
       this.facade.addAdapter('SimpleAdapter');
